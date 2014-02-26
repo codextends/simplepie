@@ -235,6 +235,12 @@ class SimplePie_Parser
 		}
 	}
 
+
+	public function __destruct()
+	{
+		$this->split_ns(null,true);
+	}
+
 	public function get_error_code()
 	{
 		return $this->error_code;
@@ -367,9 +373,14 @@ class SimplePie_Parser
 		array_pop($this->xml_lang);
 	}
 
-	public function split_ns($string)
+	public function split_ns($string, $clear_cache = false)
 	{
 		static $cache = array();
+		if ($clear_cache) {
+     		$cache = null;
+        	return;
+        }
+
 		if (!isset($cache[$string]))
 		{
 			if ($pos = strpos($string, $this->separator))
